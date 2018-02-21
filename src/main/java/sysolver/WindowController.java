@@ -1,5 +1,7 @@
 package sysolver;
 
+import java.io.IOException;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
@@ -24,6 +26,7 @@ public class WindowController {
 	@FXML
 	protected void handleLUButtonAction(ActionEvent event) {
 		actiontarget.setText("LU Fact button pressed");
+		mySolver.reinit();
 		sendMatrixToSolver();
 		sendVectorToSolver();
 		// mySolver.LUSolve();
@@ -45,17 +48,24 @@ public class WindowController {
 	private void sendMatrixToSolver() {
 		String matrix = matrixTextArea.getText();
 		String[] rows = matrix.split("\n");
-
 		for (String row : rows) {
-			mySolver.addVectToMatrix(row.split(" "));
+			if(row.isEmpty()){
+				//popup here
+			} else {
+				mySolver.addVectToMatrix(row.split(" "));
+			}
 		}
-
+		mySolver.printMatrix();
 	}
 
 	private void sendVectorToSolver() {
 		String vector = vectorTextArea.getText();
 		// TESTS HERE
-		mySolver.setCols(vector.length());
-		mySolver.setVector(vector.split(" "));
+		if (vector.isEmpty()) {
+			// popup here
+		} else {
+			mySolver.setVector(vector.split(" "));
+		}
+		mySolver.printVector();
 	}
 }
