@@ -8,54 +8,43 @@ public class Solver {
     protected int rows;
     protected int cols;
     protected ArrayList<ArrayList<Double>> A;
+    protected ArrayList<ArrayList<Double>> L;
+    protected ArrayList<ArrayList<Double>> U;
     protected ArrayList<Double> b;
 
     public Solver() {
         rows = 0;
         cols = 0;
         A = new ArrayList<ArrayList<Double>>();
+        L = new ArrayList<ArrayList<Double>>();
+        U = new ArrayList<ArrayList<Double>>();
         b = new ArrayList<Double>();
     }
 
-    public Solver(int rows, int cols) {
-        this.rows = rows;
-        this.cols = cols;
+    public void setMatrix(ArrayList<ArrayList<Double>> matrix) {
+        this.A = matrix;
+        System.out.println();
+        System.out.println("New matrix set : ");
+        this.printMatrix();
     }
 
-    public void reinit() {
-        rows = 0;
-        cols = 0;
-        A = new ArrayList<ArrayList<Double>>();
-        b = new ArrayList<Double>();
+    public void setVector(ArrayList<Double> vect) {
+        this.b = vect;
+        System.out.println();
+        System.out.println("New vector set : ");
+        this.printVector();
     }
 
-    public void setCols(int val) {
-        this.cols = val;
+    public int getMatrixSize() {
+        return A.size();
     }
 
-    public void setVector(String[] chain) {
-        for (String carac : chain) {
-            try {
-                b.add((Double) Double.parseDouble(carac));
-            } catch (NullPointerException e) {
-                System.err.println("Error : ");
-                System.err.println(e);
-            }
-        }
-        // DO NOT FORGET TO EMPTY THE VECTOR
-    }
-
-    public void addVectToMatrix(String[] chain) {
-        ArrayList<Double> temp = new ArrayList<Double>();
-        for (String carac : chain) {
-            try {
-                temp.add((Double) Double.parseDouble(carac));
-            } catch (NullPointerException e) {
-                System.err.println("error");
-            }
-        }
-        A.add(temp);
-    }
+    // public void reinit() {
+    //     rows = 0;
+    //     cols = 0;
+    //     A = new ArrayList<ArrayList<Double>>();
+    //     b = new ArrayList<Double>();
+    // }
 
     public void printVector() {
         System.out.println("Vector b : ");
@@ -74,6 +63,22 @@ public class Solver {
             }
             i++;
         }
+    }
+
+    public ArrayList<ArrayList<Double>> calculateUpper() {
+        // TODO
+        return this.U;
+    }
+
+    public ArrayList<ArrayList<Double>> calculateLower() {
+        // TODO
+        return this.L;
+    }
+
+    public Double calculateDet() {
+        // TODO
+
+        return 0.0;
     }
 
 }
