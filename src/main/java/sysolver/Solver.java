@@ -38,7 +38,7 @@ public class Solver {
     public ArrayList<ArrayList<Double>> getMatrix() {
         return this.A;
     }
-    
+
     public ArrayList<Double> getVector() {
         return this.b;
     }
@@ -73,19 +73,61 @@ public class Solver {
         }
     }
 
-    public ArrayList<ArrayList<Double>> calculateUpper() {
-        // TODO
-        return this.U;
-    }
+    public void LUFact() {
+        int N = this.getMatrixSize();
+        Double[] P;
+        Double absA;
+        for (int i = 0; i < N; i++) {
+            P[i] = i;
+        }
+        for (int i = 0; i < N; i++) {
+            double maxA = 0.0;
+            int imax = i;
 
-    public ArrayList<ArrayList<Double>> calculateLower() {
-        // TODO
-        return this.L;
+            for (int k = i; k < N; k++) {
+                if (absA = Math.abs(A.get(k).get(i)) > maxA) {
+                    maxA = absA;
+                    imax = k;
+                }
+            }
+            if (imax != i) {
+                // pivoting p
+                int j = P[i];
+                P[i] = P[imax];
+                P[imax] = j;
+
+                // pivoting rows of A
+                Array<Double> temp = A.get(i);
+                A.set(i, A.get(imax));
+                A.set(imax, temp);
+
+                P[N]++;
+            }
+            for (int j = i + 1; j < N; j++) {
+                A.get(j).set(i, A.get(j).get(i) / A.get(i).get(i));
+
+                for (int k = i+1; k < N; k++) {
+                    A.get(j).set(k, (A.get(j).get(k) - (A.get(j).get(i)*A.get(i).get(k))));
+                }
+            }
+        }
     }
+    // public ArrayList<ArrayList<Double>> calculateUpper() {
+    //     // TODO
+
+    //     return this.U;
+    // }
+
+    // public ArrayList<ArrayList<Double>> calculateLower() {
+    //     // TODO
+    //     return this.L;
+    // }
 
     public Double calculateDet() {
         // TODO
-
+        if (this.getMatrixSize() == 2) {
+            return A.get(0).get(0) * A.get(1).get(1) - A.get(0).get(1) * A.get(1).get(0);
+        }
         return 0.0;
     }
 

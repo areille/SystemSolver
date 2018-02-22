@@ -25,20 +25,22 @@ public class WindowController {
 	@FXML
 	private TextArea outputTextArea;
 
-	private Solver mySolver = new Solver();
+	private LUSolver myLuSolver = new LUSolver();
+	// private LUSolver myLuSolver = new LUSolver();
 	private Boolean isInputError = false;
 
 	@FXML
 	protected void handleLUButtonAction(ActionEvent event) {
 		actiontarget.setText("LU Fact button pressed");
-		mySolver.reinit();
-		sendMatrixToSolver();
-		sendVectorToSolver();
+		myLuSolver.reinit();
+		sendMatrixToSolver(myLuSolver);
+		sendVectorToSolver(myLuSolver);
 		if (isInputError) {
 			outputTextArea.setText("");
 		} else {
-			String mat = matrixToString(mySolver.getMatrix());
-			String vect = vectorToString(mySolver.getVector());
+			String mat = matrixToString(myLuSolver.getMatrix());
+			String vect = vectorToString(myLuSolver.getVector());
+			String det = myLuSolver.calculateDet().toString();
 			String output = "";
 			output += "LU Decomposition with scaled partial pivoting\n";
 			output += "Original matrix :\n";
@@ -46,8 +48,12 @@ public class WindowController {
 			output += "\n";
 			output += "Original vector :\n";
 			output += vect;
+			output += "\n\n";
+			output += "Determinant = " + det;
 			outputTextArea.setText(output);
+
 		}
+		myLuSolver.solve();
 		// mySolver.LUSolve();
 	}
 
@@ -65,7 +71,7 @@ public class WindowController {
 		// mySolver.clear();
 	}
 
-	private void sendMatrixToSolver() {
+	private void sendMatrixToSolver(Solver theSolver) {
 		ArrayList<ArrayList<Double>> A = new ArrayList<ArrayList<Double>>();
 		String matrix = matrixTextArea.getText();
 		String[] rows = matrix.split("\n");
@@ -100,11 +106,11 @@ public class WindowController {
 			}
 		}
 		if (!isInputError) {
-			mySolver.setMatrix(A);
+			theSolver.setMatrix(A);
 		}
 	}
 
-	private void sendVectorToSolver() {
+	private void sendVectorToSolver(Solver theSolver) {
 		ArrayList<Double> b = new ArrayList<Double>();
 		String vector = vectorTextArea.getText();
 		String[] values = vector.split(" ");
@@ -113,7 +119,7 @@ public class WindowController {
 		if (vector.isEmpty()) {
 			isInputError = true;
 			System.out.println("Input error : no vector input");
-		} else if (values.length != mySolver.getMatrixSize()) {
+		} else if (values.length != theSolver.getMatrixSize()) {
 			isInputError = true;
 			System.out.println("Input error : size of vector different from matrix size");
 		} else {
@@ -129,7 +135,7 @@ public class WindowController {
 			}
 		}
 		if (!isInputError) {
-			mySolver.setVector(b);
+			theSolver.setVector(b);
 		}
 	}
 
