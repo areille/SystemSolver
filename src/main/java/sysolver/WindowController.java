@@ -22,14 +22,32 @@ public class WindowController {
 	@FXML
 	private TextArea vectorTextArea;
 
+	@FXML
+	private TextArea outputTextArea;
+
 	private Solver mySolver = new Solver();
+	private Boolean isInputError = false;
 
 	@FXML
 	protected void handleLUButtonAction(ActionEvent event) {
 		actiontarget.setText("LU Fact button pressed");
-		// mySolver.reinit();
+		mySolver.reinit();
 		sendMatrixToSolver();
 		sendVectorToSolver();
+		if (isInputError) {
+			outputTextArea.setText("");
+		} else {
+			String mat = matrixToString(mySolver.getMatrix());
+			String vect = vectorToString(mySolver.getVector());
+			String output = "";
+			output += "LU Decomposition with scaled partial pivoting\n";
+			output += "Original matrix :\n";
+			output += mat;
+			output += "\n";
+			output += "Original vector :\n";
+			output += vect;
+			outputTextArea.setText(output);
+		}
 		// mySolver.LUSolve();
 	}
 
@@ -43,6 +61,7 @@ public class WindowController {
 		actiontarget.setText("Clear button pressed");
 		matrixTextArea.setText("");
 		vectorTextArea.setText("");
+		outputTextArea.setText("");
 		// mySolver.clear();
 	}
 
@@ -50,7 +69,7 @@ public class WindowController {
 		ArrayList<ArrayList<Double>> A = new ArrayList<ArrayList<Double>>();
 		String matrix = matrixTextArea.getText();
 		String[] rows = matrix.split("\n");
-		boolean isInputError = false;
+		this.isInputError = false;
 		if (rows.length < 2) {
 			isInputError = true;
 			System.err.println("Input error : too small matrix (mini 2x2)");
@@ -90,7 +109,7 @@ public class WindowController {
 		String vector = vectorTextArea.getText();
 		String[] values = vector.split(" ");
 
-		boolean isInputError = false;
+		this.isInputError = false;
 		if (vector.isEmpty()) {
 			isInputError = true;
 			System.out.println("Input error : no vector input");
@@ -112,5 +131,25 @@ public class WindowController {
 		if (!isInputError) {
 			mySolver.setVector(b);
 		}
+	}
+
+	private String matrixToString(ArrayList<ArrayList<Double>> matrix) {
+		String stringMatrix = "";
+		for (ArrayList<Double> row : matrix) {
+			for (Double val : row) {
+				stringMatrix += val.toString() + " ";
+			}
+			stringMatrix += "\n";
+		}
+
+		return stringMatrix;
+	}
+
+	private String vectorToString(ArrayList<Double> vect) {
+		String stringVect = "";
+		for (Double val : vect) {
+			stringVect += val.toString() + " ";
+		}
+		return stringVect;
 	}
 }

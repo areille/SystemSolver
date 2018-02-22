@@ -15,9 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-
-<VBox maxHeight="400.0" maxWidth="1000.0" minHeight="100.0" minWidth="400.0" prefHeight="400.0" prefWidth="707.0" xmlns="http://javafx.com/javafx/9"
-  xmlns:fx="http://javafx.com/fxml/1" fx:controller="sysolver.WindowController">
+<VBox maxHeight="615.0" maxWidth="1000.0" minHeight="100.0" minWidth="400.0" prefHeight="615.0" prefWidth="710.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sysolver.WindowController">
   <children>
     <MenuBar>
       <menus>
@@ -38,7 +36,7 @@
         </Menu>
       </menus>
     </MenuBar>
-    <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="373.0" prefWidth="723.0">
+    <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="595.0" prefWidth="723.0">
       <children>
         <GridPane alignment="center" hgap="10" vgap="10">
           <padding>
@@ -48,18 +46,19 @@
           <Text text="Please input matrix A and vector b" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0" />
 
           <Text text="A = " GridPane.columnIndex="0" GridPane.rowIndex="1" />
-          <TextArea fx:id="matrixTextArea" prefHeight="196.0" prefWidth="322.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+          <TextArea fx:id="matrixTextArea" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="131.0" prefWidth="322.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
           <Text text="b = " GridPane.columnIndex="2" GridPane.rowIndex="1" />
           <TextArea fx:id="vectorTextArea" prefHeight="196.0" prefWidth="170.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
           <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
             <buttons>
-              <Button mnemonicParsing="false" text="LU Pivot" onAction="#handleLUButtonAction"/>
-              <Button mnemonicParsing="false" text="Invert" onAction="#handleInvertButtonAction" />
-              <Button mnemonicParsing="false" text="Clear" onAction="#handleClearButtonAction" />
+              <Button mnemonicParsing="false" onAction="#handleLUButtonAction" text="LU Pivot" />
+              <Button mnemonicParsing="false" onAction="#handleInvertButtonAction" text="Invert" />
+              <Button mnemonicParsing="false" onAction="#handleClearButtonAction" text="Clear" />
             </buttons>
           </ButtonBar>
-          <Text fx:id="actiontarget" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="7" />
+          <Text fx:id="actiontarget" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="8" />
+          <TextArea fx:id="outputTextArea" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="4" />
           <columnConstraints>
             <ColumnConstraints />
             <ColumnConstraints />
@@ -68,13 +67,14 @@
           </columnConstraints>
           <rowConstraints>
             <RowConstraints />
+            <RowConstraints maxHeight="192.0" minHeight="132.0" prefHeight="132.0" />
+            <RowConstraints maxHeight="104.0" minHeight="31.0" prefHeight="31.0" />
+            <RowConstraints maxHeight="73.0" minHeight="2.0" prefHeight="2.0" />
+            <RowConstraints maxHeight="271.0" minHeight="204.0" prefHeight="271.0" />
             <RowConstraints />
             <RowConstraints />
             <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
+                  <RowConstraints />
           </rowConstraints>
         </GridPane>
       </children>

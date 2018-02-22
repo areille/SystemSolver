@@ -24,27 +24,35 @@ public class Solver {
     public void setMatrix(ArrayList<ArrayList<Double>> matrix) {
         this.A = matrix;
         System.out.println();
-        System.out.println("New matrix set : ");
-        this.printMatrix();
+        // System.out.println("New matrix set : ");
+        // this.printMatrix();
     }
 
     public void setVector(ArrayList<Double> vect) {
         this.b = vect;
         System.out.println();
-        System.out.println("New vector set : ");
-        this.printVector();
+        // System.out.println("New vector set : ");
+        // this.printVector();
+    }
+
+    public ArrayList<ArrayList<Double>> getMatrix() {
+        return this.A;
+    }
+    
+    public ArrayList<Double> getVector() {
+        return this.b;
     }
 
     public int getMatrixSize() {
         return A.size();
     }
 
-    // public void reinit() {
-    //     rows = 0;
-    //     cols = 0;
-    //     A = new ArrayList<ArrayList<Double>>();
-    //     b = new ArrayList<Double>();
-    // }
+    public void reinit() {
+        rows = 0;
+        cols = 0;
+        A = new ArrayList<ArrayList<Double>>();
+        b = new ArrayList<Double>();
+    }
 
     public void printVector() {
         System.out.println("Vector b : ");
