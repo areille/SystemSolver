@@ -32,26 +32,41 @@ public class WindowController {
 	@FXML
 	protected void handleLUButtonAction(ActionEvent event) {
 		actiontarget.setText("LU Fact button pressed");
-		myLuSolver.reinit();
+		myLuSolver.reinit(0);
 		sendMatrixToSolver(myLuSolver);
 		sendVectorToSolver(myLuSolver);
 		if (isInputError) {
 			outputTextArea.setText("");
 		} else {
-			String mat = matrixToString(myLuSolver.getMatrix());
-			String vect = vectorToString(myLuSolver.getVector());
-			String det = myLuSolver.calculateDet().toString();
 			String output = "";
 			output += "LU Decomposition with scaled partial pivoting\n";
+			output += "\n";
+
+			String mat = matrixToString(myLuSolver.getMatrix());
 			output += "Original matrix :\n";
 			output += mat;
 			output += "\n";
+
+			String vect = vectorToString(myLuSolver.getVector());
 			output += "Original vector :\n";
 			output += vect;
 			output += "\n\n";
-			output += "Determinant = " + det;
-			outputTextArea.setText(output);
 
+			// myLuSolver.LUFact();
+
+			// String matL = matrixToString(myLuSolver.getLMatrix());
+			// output += "Lower matrix :\n";
+			// output += matL;
+			// output += "\n";
+
+			// String matU = matrixToString(myLuSolver.getUMatrix());
+			// output += "Upper matrix :\n";
+			// output += matU;
+			// output += "\n";
+
+			// String det = myLuSolver.calculateDet().toString();
+			// output += "Determinant = " + det;
+			outputTextArea.setText(output);
 		}
 		myLuSolver.solve();
 		// mySolver.LUSolve();
@@ -72,14 +87,16 @@ public class WindowController {
 	}
 
 	private void sendMatrixToSolver(Solver theSolver) {
-		ArrayList<ArrayList<Double>> A = new ArrayList<ArrayList<Double>>();
 		String matrix = matrixTextArea.getText();
 		String[] rows = matrix.split("\n");
+		int size = rows.length;
+		Double[][] A = new Double[size][size];
 		this.isInputError = false;
-		if (rows.length < 2) {
+		if (size < 2) {
 			isInputError = true;
 			System.err.println("Input error : too small matrix (mini 2x2)");
 		} else {
+			int i = 0;
 			for (String row : rows) {
 				String[] lineValues = row.split(" ");
 				if (lineValues.length != rows.length) {
@@ -88,11 +105,13 @@ public class WindowController {
 					isInputError = true;
 					break;
 				} else {
-					ArrayList<Double> tempRow = new ArrayList<Double>();
+					Double[] tempRow = new Double[size];
+					int j = 0;
 					for (String value : lineValues) {
 						if (value.matches("\\d+")) {
 							// tests if the input contains digits
-							tempRow.add((Double) Double.parseDouble(value));
+							tempRow[j] = (Double) Double.parseDouble(value);
+							j++;
 						} else {
 							isInputError = true;
 							System.out.println("Input error : matrix containing non digital characters");
@@ -100,8 +119,9 @@ public class WindowController {
 						}
 					}
 					if (!isInputError) {
-						A.add(tempRow);
+						A[i] = tempRow;
 					}
+					i++;
 				}
 			}
 		}
@@ -111,9 +131,9 @@ public class WindowController {
 	}
 
 	private void sendVectorToSolver(Solver theSolver) {
-		ArrayList<Double> b = new ArrayList<Double>();
 		String vector = vectorTextArea.getText();
 		String[] values = vector.split(" ");
+		Double[] b = new Double[values.length];
 
 		this.isInputError = false;
 		if (vector.isEmpty()) {
@@ -123,15 +143,17 @@ public class WindowController {
 			isInputError = true;
 			System.out.println("Input error : size of vector different from matrix size");
 		} else {
+			int i = 0;
 			for (String val : values) {
 				if (val.matches("\\d+")) {
 					// tests if the input contains digits
-					b.add((Double) Double.parseDouble(val));
+					b[i] = (Double) Double.parseDouble(val);
 				} else {
 					isInputError = true;
 					System.out.println("Input error : vector containing non digital characters");
 					break;
 				}
+				i++;
 			}
 		}
 		if (!isInputError) {
@@ -139,9 +161,9 @@ public class WindowController {
 		}
 	}
 
-	private String matrixToString(ArrayList<ArrayList<Double>> matrix) {
+	private String matrixToString(Double[][] matrix) {
 		String stringMatrix = "";
-		for (ArrayList<Double> row : matrix) {
+		for (Double[] row : matrix) {
 			for (Double val : row) {
 				stringMatrix += val.toString() + " ";
 			}
@@ -151,7 +173,7 @@ public class WindowController {
 		return stringMatrix;
 	}
 
-	private String vectorToString(ArrayList<Double> vect) {
+	private String vectorToString(Double[] vect) {
 		String stringVect = "";
 		for (Double val : vect) {
 			stringVect += val.toString() + " ";
