@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.text.Text;
 import java.util.ArrayList;
+import java.text.DecimalFormat;
 
 /**
  * <!-- begin-user-doc -->
@@ -28,6 +29,7 @@ public class WindowController {
 	private LUSolver myLuSolver = new LUSolver();
 	// private LUSolver myLuSolver = new LUSolver();
 	private Boolean isInputError = false;
+	DecimalFormat df = new DecimalFormat("####0.00000");
 
 	@FXML
 	protected void handleLUButtonAction(ActionEvent event) {
@@ -52,20 +54,23 @@ public class WindowController {
 			output += vect;
 			output += "\n\n";
 
-			// myLuSolver.LUFact();
+			myLuSolver.findPivot();
+			myLuSolver.multiplyMatrixToPivot();
+			myLuSolver.LUFact();
 
-			// String matL = matrixToString(myLuSolver.getLMatrix());
-			// output += "Lower matrix :\n";
-			// output += matL;
-			// output += "\n";
+			String matL = matrixToString(myLuSolver.getLMatrix());
+			output += "Lower matrix :\n";
+			output += matL;
+			output += "\n";
 
-			// String matU = matrixToString(myLuSolver.getUMatrix());
-			// output += "Upper matrix :\n";
-			// output += matU;
-			// output += "\n";
+			String matU = matrixToString(myLuSolver.getUMatrix());
+			output += "Upper matrix :\n";
+			output += matU;
+			output += "\n";
 
-			// String det = myLuSolver.calculateDet().toString();
-			// output += "Determinant = " + det;
+			String det = myLuSolver.calculateDet().toString();
+			output += "Determinant = " + det;
+
 			outputTextArea.setText(output);
 		}
 		myLuSolver.solve();
@@ -165,7 +170,7 @@ public class WindowController {
 		String stringMatrix = "";
 		for (Double[] row : matrix) {
 			for (Double val : row) {
-				stringMatrix += val.toString() + " ";
+				stringMatrix += df.format(val).toString() + "  ";
 			}
 			stringMatrix += "\n";
 		}
@@ -176,8 +181,9 @@ public class WindowController {
 	private String vectorToString(Double[] vect) {
 		String stringVect = "";
 		for (Double val : vect) {
-			stringVect += val.toString() + " ";
+			stringVect += df.format(val).toString() + "  ";
 		}
 		return stringVect;
 	}
+
 }
