@@ -49,7 +49,7 @@ public class WindowController {
 			output += mat;
 			output += "\n";
 
-			String vect = vectorToString(myLuSolver.getVector());
+			String vect = vectorToString(myLuSolver.getbVector());
 			output += "Original vector :\n";
 			output += vect;
 			output += "\n\n";
@@ -68,13 +68,22 @@ public class WindowController {
 			output += matU;
 			output += "\n";
 
+			String matP = matrixToString(myLuSolver.getPivot());
+			output += "Pivot matrix :\n";
+			output += matP;
+			output += "\n";
+			
+			myLuSolver.solve();
+			String res = vectorToString(myLuSolver.getxVector());
+			output += "Result vector :\n";
+			output += res;
+			output += "\n\n";
+
 			String det = myLuSolver.calculateDet().toString();
 			output += "Determinant = " + det;
 
 			outputTextArea.setText(output);
 		}
-		myLuSolver.solve();
-		// mySolver.LUSolve();
 	}
 
 	@FXML
@@ -113,14 +122,29 @@ public class WindowController {
 					Double[] tempRow = new Double[size];
 					int j = 0;
 					for (String value : lineValues) {
-						if (value.matches("\\d+")) {
-							// tests if the input contains digits
-							tempRow[j] = (Double) Double.parseDouble(value);
-							j++;
+						// For negative numbers
+						if (value.startsWith("-")) {
+							String tempValue = value.substring(1);
+							if (tempValue.matches("\\d+")) {
+								tempRow[j] = -(Double) Double.parseDouble(tempValue);
+								j++;
+							} else {
+								// TODO : POPUP
+								isInputError = true;
+								System.out.println("Input error : matrix containing non digital characters");
+								break;
+							}
 						} else {
-							isInputError = true;
-							System.out.println("Input error : matrix containing non digital characters");
-							break;
+							if (value.matches("\\d+")) {
+								// tests if the input contains digits
+								tempRow[j] = (Double) Double.parseDouble(value);
+								j++;
+							} else {
+								// TODO : POPUP
+								isInputError = true;
+								System.out.println("Input error : matrix containing non digital characters");
+								break;
+							}
 						}
 					}
 					if (!isInputError) {
@@ -150,15 +174,28 @@ public class WindowController {
 		} else {
 			int i = 0;
 			for (String val : values) {
-				if (val.matches("\\d+")) {
-					// tests if the input contains digits
-					b[i] = (Double) Double.parseDouble(val);
+				if (val.startsWith("-")){
+					String tempValue = val.substring(1);
+					if (tempValue.matches("\\d+")) {
+						// tests if the input contains digits
+						b[i] = - (Double) Double.parseDouble(tempValue);
+						i++;
+					} else {
+						isInputError = true;
+						System.out.println("Input error : vector containing non digital characters");
+						break;
+					}
 				} else {
-					isInputError = true;
-					System.out.println("Input error : vector containing non digital characters");
-					break;
+					if (val.matches("\\d+")) {
+						// tests if the input contains digits
+						b[i] = (Double) Double.parseDouble(val);
+						i++;
+					} else {
+						isInputError = true;
+						System.out.println("Input error : vector containing non digital characters");
+						break;
+					}
 				}
-				i++;
 			}
 		}
 		if (!isInputError) {

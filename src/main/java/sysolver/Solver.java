@@ -17,6 +17,7 @@ public class Solver {
     // protected ArrayList<Double> b;
     protected Double[] b;
     protected Double[][] p;
+    protected Double[] x;
 
     public Solver() {
         n = 0;
@@ -54,8 +55,15 @@ public class Solver {
         return this.U;
     }
 
-    public Double[] getVector() {
+    public Double[][] getPivot() {
+        return this.p;
+    }
+
+    public Double[] getbVector() {
         return this.b;
+    }
+    public Double[] getxVector() {
+        return this.x;
     }
 
     public int getMatrixSize() {
@@ -189,10 +197,10 @@ public class Solver {
                 temp[i][k] = mult;
                 for (j = k + 1; j < n; j++) {
                     temp[i][j] -= mult * temp[k][j];
-                    if (Math.abs(temp[i][i]) < 1.e-07) {
-                        System.out.println("Pivot is zero (2)");
-                        System.exit(1);
-                    }
+                    // if (Math.abs(temp[i][i]) < 1.e-07) {
+                    //     System.out.println("Pivot is zero (2)");
+                    //     System.exit(1);
+                    // }
                 }
             }
         }
